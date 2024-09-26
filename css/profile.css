@@ -1,0 +1,187 @@
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('../imgs/icons/background.jpeg');
+    background-size: cover;
+    display: flex;
+    background-position: center; /* 调整背景图片的位置，center表示居中 */
+}
+
+
+
+#mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ... (existing styles) ... */
+
+#userInfo input[type="file"] {
+    display: none;
+}
+
+#userInfo label {
+    cursor: pointer;
+    color: #4caf50;
+    text-decoration: underline;
+}
+
+#passwordModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#passwordModalContent {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#passwordModalClose {
+    cursor: pointer;
+    color: #555;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+
+#sidebar {
+position: fixed;
+top: 0;
+left: 0;
+height: 100%;
+background-color: rgba(12, 75, 138, 0.8); /* Use rgba for transparency */
+color: #ecf0f1;
+padding: 20px;
+width: 200px;
+box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+backdrop-filter: blur(10px); /* Apply a blur effect for a frosted glass appearance */
+}
+
+#mainContent {
+margin-left: 200px;
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px;
+}
+
+
+#sidebar a {
+color: #ecf0f1;
+text-decoration: none;
+padding: 10px;
+margin: 5px;
+border-radius: 5px;
+transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
+}
+
+#sidebar a:hover {
+background-color: #3498db; /* Hover background color */
+color: #fff; /* Hover text color */
+}
+
+#sidebar h1 {
+font-size: 1.5em;
+margin-bottom: 20px;
+}
+
+
+
+
+#profileContainer {
+background-color: #fff;
+border-radius: 15px;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+margin: 20px;
+width: 80%;
+max-width: 600px;
+padding: 40px;
+}
+
+h1, h2 {
+color: #333;
+text-align: center;
+}
+
+#userInfo img {
+width: 150px;
+height: 150px;
+border-radius: 50%;
+margin: 20px auto;
+display: block;
+box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+label {
+display: block;
+margin-bottom: 12px;
+color: #555;
+}
+
+input {
+width: 100%;
+padding: 12px;
+margin-bottom: 20px;
+box-sizing: border-box;
+border: 1px solid #ccc;
+border-radius: 8px;
+background-color: #f9f9f9;
+transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input:focus {
+border-color: #4caf50;
+background-color: #fff;
+}
+
+button {
+background-color: #4caf50;
+color: #fff;
+padding: 12px 20px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+transition: background-color 0.3s ease;
+}
+
+button:hover {
+background-color: #45a049;
+}
+
+ul {
+list-style: none;
+padding: 0;
+text-align: center;
+}
+
+ul li {
+margin-bottom: 12px;
+padding: 12px;
+border-radius: 8px;
+background-color: #f9f9f9;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+

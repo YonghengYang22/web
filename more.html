@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show More Example</title>
+    <link rel="stylesheet" href="css/profile.css">
+
+</head>
+<body>
+    <div id="sidebar">
+        <a href="user_profile.html" onclick="showProfile()">个人主页</a>
+        <a href="favorite_website.html" onclick="showFavoriteWebsites()">收藏网页</a>
+        <a href="more.html" onclick="showMore()">更多选项</a>
+        <a href="index.html">Back</a>
+    </div>
+
+    <div id="mainContent">
+        <div id="contentContainer">
+            <div id="limitedContent">
+                <h1>Show More Example</h1>
+                <p>This is the limited content that is initially visible. Click the button below to reveal more content.</p>
+            </div>
+            <div id="moreContent">
+                <p>This is additional content that is hidden initially. You can show or hide this content by clicking the button.</p>
+                <p>Feel free to add more paragraphs, images, or any other content you want to display.</p>
+            </div>
+            <button id="showMoreButton" onclick="toggleContent()">Show More</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleContent() {
+            var limitedContent = document.getElementById('limitedContent');
+            var moreContent = document.getElementById('moreContent');
+            var showMoreButton = document.getElementById('showMoreButton');
+
+            limitedContent.style.maxHeight = limitedContent.style.maxHeight === '200px' ? 'none' : '200px';
+            moreContent.style.maxHeight = moreContent.style.maxHeight === 'none' ? '200px' : 'none';
+            showMoreButton.textContent = showMoreButton.textContent === 'Show More' ? 'Show Less' : 'Show More';
+        }
+    </script>
+</body>
+</html>

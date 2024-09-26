@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/detail.css">
+    <title>News Detail</title>
+    <!-- 引入 Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+</head>
+<body>
+    <div id="detailContainer">
+        <div id="detailContent">
+            <!-- Placeholder for news details -->
+        </div>
+        <div id="detailFooter">
+             <!-- Like 按钮 -->
+            <button onclick="toggleLike()">
+                <img id="likeIcon" src="imgs/icons/heart-regular.svg" alt="Like">
+            </button>
+
+            <!-- Favorite 按钮 -->
+            <button onclick="toggleFavorite()">
+                <img id="favoriteIcon" src="imgs/icons/star-regular.svg" alt="Favorite">
+            </button>
+            <hr>
+            &copy; <script>
+                var today = new Date();
+                var year = today.getFullYear();
+                document.write(year)
+            </script> 新闻网 | Author: klull
+        </div>        
+    </div>
+
+    <script>
+       // 点赞收藏
+    var likeIcon = document.getElementById('likeIcon');
+    var favoriteIcon = document.getElementById('favoriteIcon');
+    var isLiked = false; // 初始状态为未喜欢
+    var isFavorite = false; // 初始状态为未收藏
+
+    function toggleLike() {
+        // 检查用户登录状态
+        if (checkLoginStatus()) {
+            // 切换喜欢状态
+            isLiked = !isLiked;
+
+            // 根据喜欢状态切换图标
+            if (isLiked) {
+                likeIcon.src = 'imgs/icons/heart-solid.svg'; // 切换为实心心形图标
+                // 在这里添加执行喜欢相关的操作
+                likeOrLogin();
+            } else {
+                likeIcon.src = 'imgs/icons/heart-regular.svg'; // 切换为空心心形图标
+                // 在这里添加执行取消喜欢相关的操作
+                unlikeOrLogin();
+            }
+        } else {
+            // 用户未登录，提示登录
+            alert("Please log in to like the news.");
+        }
+    }
+
+    function toggleFavorite() {
+        // 检查用户登录状态
+        if (checkLoginStatus()) {
+            // 切换收藏状态
+            isFavorite = !isFavorite;
+
+            // 根据收藏状态切换图标
+            if (isFavorite) {
+                favoriteIcon.src = 'imgs/icons/star-solid.svg'; // 切换为实心星星图标
+                // 在这里添加执行收藏相关的操作
+                favoriteOrLogin();
+            } else {
+                favoriteIcon.src = 'imgs/icons/star-regular.svg'; // 切换为空心星星图标
+                // 在这里添加执行取消收藏相关的操作
+                unfavoriteOrLogin();
+            }
+        } else {
+            // 用户未登录，提示登录
+            alert("Please log in to favorite the news.");
+        }
+    }
+
+        // 检查用户登录状态
+        function checkLoginStatus() {
+            var userID = getCookie("userID");
+            console.log('userID')
+            return !!userID; // 登陆则返回真
+        }
+
+        // 点赞
+        function likeOrLogin() {
+            if (checkLoginStatus()) {
+                alert("Liked!");
+                // 在这里添加执行喜欢相关的操作
+            } else {
+                // 提醒用户登录
+                alert("Please log in to like the news.");
+            }
+        }
+
+        // 取消点赞
+        function unlikeOrLogin() {
+            if (checkLoginStatus()) {
+                // 取消
+                alert("Unliked!");
+                // 在这里添加执行取消喜欢相关的操作
+            } else {
+                //提醒
+                alert("Please log in to unlike the news.");
+            }
+        }
+
+        function favoriteOrLogin() {
+            if (checkLoginStatus()) {
+                alert("Favorited!");
+                // 在这里添加执行收藏相关的操作
+                addFavorite()
+            } else {
+                alert("Please log in to favorite the news.");
+            }
+        }
+
+        function unfavoriteOrLogin() {
+            if (checkLoginStatus()) {
+                alert("Unfavorited!");
+                // 在这里添加执行取消收藏相关的操作
+                removeFavorite()
+            } else {
+                alert("Please log in to unfavorite the news.");
+            }
+        }
+
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+
+            if (parts.length === 2) {
+                return parts.pop().split(";").shift();
+            }
+        }
+
+
+
+
+        //显示新闻页面内容
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var newsId = urlParams.get('id');
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'detail.php?id=' + newsId, true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Handle the response and display news details
+                handleNewsDetails(xhr.responseText);
+            }
+        };
+
+        xhr.send();
+
+        function handleNewsDetails(responseText) {
+            var detailContent = document.getElementById('detailContent');
+            var newsDetails = JSON.parse(responseText);
+
+            detailContent.innerHTML = `
+                <h1>${newsDetails.title}</h1>
+                <p>${newsDetails.datetime}</p>
+                <p>${newsDetails.body}</p>
+                <p><a href="${newsDetails.url}" target="_blank">${newsDetails.url}</a></p>
+            `;
+        }
+
+        
+
+        //向后端提交收藏的请求
+        function addFavorite() {
+            // 检查用户登录状态
+            if (checkLoginStatus()) {
+                // 获取用户ID
+                var userId = getCookie("userID");
+        
+                // 发送添加收藏请求到后端
+                fetch('favorite.php?action=add_favorite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        newsId: newsId,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 添加成功
+                        alert("Added to favorites!");
+                        // 在这里添加其他UI更新或操作
+                    } else {
+                        // 添加失败，根据具体原因输出提示
+                        if (data.reason) {
+                            alert("Failed to add to favorites. Reason: " + data.reason);
+                        } else {
+                            alert("Failed to add to favorites. Please try again.");
+                        }
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            } else {
+                // 用户未登录，提示登录
+                alert("Please log in to add to favorites.");
+            }
+        }
+        
+    
+        function removeFavorite() {
+            // 检查用户登录状态
+            if (checkLoginStatus()) {
+                // 获取用户ID
+                var userId = getCookie("userID");
+    
+                // 发送删除收藏请求到后端
+                fetch('favorite.php?action=remove_favorite', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        userId: userId,
+                        newsId: newsId,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // 删除成功
+                        alert("Removed from favorites!");
+                        // 在这里添加其他UI更新或操作
+                    } else {
+                        alert("Failed to remove from favorites. Please try again.");
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    console.error('Response:', error.response);
+                    console.error('Error stack:', error.stack);
+                    console.error('Error message:', error.message);
+                });
+            } else {
+                // 用户未登录，提示登录
+                alert("Please log in to remove from favorites.");
+            }
+        }
+
+        
+
+    </script>
+</body>
+</html>

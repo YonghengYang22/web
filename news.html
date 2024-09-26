@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Search Engine</title>
+    <style type="text/css">
+        body {
+            font-family: 'Helvetica', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        #container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #0056b3;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+
+        #footer {
+            text-align: center;
+            padding-top: 20px;
+            color: #777;
+        }
+
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        #doc {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            background-color: #fff;
+        }
+
+        #doc p {
+            margin: 10px 0;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #0056b3;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 4px;
+            display: inline-block;
+        }
+
+        .pagination a.active {
+            background-color: #0056b3;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>Search Engine</h1>
+            <form name="search" action="/search/" method="POST">
+                <p>
+                    <?php if(isset($key)): ?>
+                        <input type="text" name="key_word" value="<?= $key ?>">
+                    <?php else: ?>
+                        <input type="text" name="key_word" placeholder="Enter keywords...">
+                    <?php endif; ?>
+                    <input type="submit" value="Search">
+                </p>
+            </form>
+        </div>
+        <hr/>
+        <?php // Block high_search ?>
+        <?php // End block ?>
+        <?php if(isset($error)): ?>
+            <?php foreach($docs as $doc): ?>
+            <div id="doc">
+                <ul id="navigation">
+                    <p><big><a href="/search/<?= $doc['id']; ?>/" target="_blank"><?= $doc['title']; ?></a></big></p>
+                    <p><?= $doc['time']; ?><br/><?= $doc['snippet']; ?><br/>
+                    <a href="<?= $doc['url']; ?>" target="_blank"><?= $doc['url']; ?></a>
+                    </p>
+                </ul>
+            </div>
+            <br/>
+            <?php endforeach; ?>
+        <div class="pagination">
+            <?php foreach($page as $i): ?>
+                <a href="/search/page/<?= $i; ?>/" <?php if($i == $current_page): ?>class="active"<?php endif; ?>><?= $i; ?></a>
+            <?php endforeach; ?>
+        </div>
+        <?php else: ?>
+            <p>没有检索到相关信息!</p>
+        <?php endif; ?>
+
+		<div id="footer">
+            <hr>
+            &copy;
+            <script type="text/javascript">
+            var today = new Date();
+            var year = today.getFullYear();
+            document.write(year)
+            </script>
+        </div>
+    </div>
+</body>
+</html>

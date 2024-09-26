@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <style>button{
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #0056b3;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }</style>
+    <title>news</title>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1><a href="index.html">Search Engine</a></h1>
+            <form>
+                <p>
+                    <input type="text" id="searchBox" placeholder="Enter keywords...">
+                    <button type="button" onclick="submitForm()">Search</button>
+                </p>
+            </form>
+        </div>    
+        
+        
+        <div id="resultContainer">
+            <!-- Placeholder for search results -->
+        </div>
+        
+        <div id="footer">
+            <hr>
+            &copy;
+            <script>
+                var today = new Date();
+                var year = today.getFullYear();
+                document.write(year)
+            </script>
+        </div>
+    </div>
+
+
+<script>
+    // 页面加载完成时调用一次搜索函数
+    window.onload = function() {
+        // 显示默认内容
+        showDefaultContent();
+        
+        // 如果你希望用户进入页面时进行一次搜索，取消下面这行注释
+        // submitForm();
+    };
+
+    function submitForm() {
+        var searchBoxValue = document.getElementById('searchBox').value;
+        console.log('Sending key_word:', searchBoxValue);
+
+        // 使用 AJAX 发送搜索请求
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'search.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // 处理后端返回的数据
+                handleSearchResults(xhr.responseText);
+            }
+        };
+
+        xhr.send('key_word=' + encodeURIComponent(searchBoxValue));
+
+        // 阻止表单默认提交行为
+        return false;
+    }
+
+    function handleSearchResults(responseText) {
+        console.log(responseText);
+        var resultContainer = document.getElementById('resultContainer');
+
+        // 清空原有搜索结果
+        resultContainer.innerHTML = '';
+
+        // 解析后端返回的 JSON 数据
+        var responseData = JSON.parse(responseText);
+
+        if (responseData.error) {
+            // 显示错误信息
+            resultContainer.innerHTML = '<p>Oh no,没有检索到相关内容,去联系管理员添加吧</p>';
+        } else {
+            // 显示搜索结果
+            responseData.docs.forEach(function (doc) {
+                var docElement = document.createElement('div');
+                docElement.classList.add('doc');
+
+                var navigationElement = document.createElement('ul');
+                navigationElement.classList.add('navigation');
+
+                navigationElement.innerHTML = `
+                    <p><big><a href="detail.html?id=${doc.id}" target="_blank">${doc.title}</a></big></p>
+                    <!--内容过长自动省略，只显示两行-->
+                    <p>${doc.datetime}<br/><span style="color:  #999; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-height: 3em;">${doc.body}</span><br/>
+                    <a href="${doc.url}" target="_blank">${doc.url}</a>
+                    </p>
+                `;
+
+                docElement.appendChild(navigationElement);
+                resultContainer.appendChild(docElement);
+            });
+
+            // 显示分页链接
+            var paginationElement = document.createElement('div');
+            paginationElement.classList.add('pagination');
+
+            for (var i = 1; i <= responseData.total_pages; i++) {
+                var pageLink = document.createElement('a');
+                pageLink.href = '#';  // 此处应设置跳转链接，例如 `/search/page/${i}/`
+                pageLink.innerText = i;
+
+                if (i == responseData.current_page) {
+                    pageLink.classList.add('active');
+                }
+
+                pageLink.onclick = function (event) {
+                    event.preventDefault();
+                    var clickedPage = parseInt(this.innerText);
+                    fetchDataByPage(clickedPage);
+                };
+
+                paginationElement.appendChild(pageLink);
+            }
+
+            resultContainer.appendChild(paginationElement);
+        }
+    }
+
+    function fetchDataByPage(page) {
+        // 发起新的 AJAX 请求，获取指定页码的数据
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'search.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // 处理后端返回的数据
+                handleSearchResults(xhr.responseText);
+            }
+        };
+
+        xhr.send('key_word=' + encodeURIComponent(document.getElementById('searchBox').value) + '&page=' + page);
+    }
+
+
+</script>
+
+</body>
+</html>
+

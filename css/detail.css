@@ -1,0 +1,48 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+#detailContainer {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+#detailContent {
+    padding-bottom: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+p {
+    color: #555;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+#detailFooter button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #007BFF; /* 设置按钮文本颜色 */
+    text-decoration: none; /* 去除默认下划线 */
+}
+
+#detailFooter button:hover {
+    text-decoration: underline; /* 悬停时显示下划线 */
+}

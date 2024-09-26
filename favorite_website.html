@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+    <div id="sidebar">
+        <a href="user_profile.html" onclick="showProfile()">个人主页</a>
+        <a href="favorite_website.html" onclick="showFavoriteWebsites()">收藏网页</a>
+        <a href="more.html" onclick="showMore()">更多选项</a>
+        <a href="index.html">Back</a>
+    </div>
+
+    <div id="mainContent">
+        <div id="profileContainer">
+            <div id="favoriteWebsites">
+                <h2>Favorite Websites</h2>
+                <ul id="favoriteList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 获取用户信息
+            getUserInfo();
+        });
+        
+        function getUserInfo() {
+            // 从 cookie 中获取用户 ID
+            var userId = getCookie("userID");
+            console.log(userId);
+        
+            if (userId) {
+                // 向后端请求用户信息
+                fetch('favorite_website.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'userId=' + encodeURIComponent(userId),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // 检查是否存在错误
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
+                    // 更新收藏网页列表
+                    var favoriteList = document.getElementById('favoriteList');
+                    favoriteList.innerHTML = "";
+        
+                    if (data.length === 0) {
+                        // 如果没有收藏网页，显示提示信息
+                        var listItem = document.createElement('li');
+                        listItem.textContent = '没有收藏网页';
+                        favoriteList.appendChild(listItem);
+                    } else {
+                        // 遍历显示收藏网页链接
+                        data.data.forEach(function (textId) {
+                            var listItem = document.createElement('li');
+                            var link = document.createElement('a');
+                            link.href = 'http://localhost:81/detail.html?id=' + textId;
+                            link.textContent = 'http://localhost:81/detail.html?id=' + textId;
+                            listItem.appendChild(link);
+                            favoriteList.appendChild(listItem);
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+        
+        
+        
+        // Function to get the value of a cookie by name
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+        
+            if (parts.length === 2) {
+                return parts.pop().split(";").shift();
+            }
+        }
+        
+    </script>
+    
+</html>

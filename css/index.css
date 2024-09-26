@@ -1,0 +1,144 @@
+
+body {
+    font-family: 'Helvetica', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+#container {
+    width: 80%;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #0056b3;
+}
+
+form {
+    text-align: center;
+    margin-top: 20px;
+}
+
+input {
+    width: 600px; /* 设置输入框宽度 */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #0056b3;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0056b3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+#footer {
+    text-align: center;
+    padding-top: 20px;
+    color: #777;
+}
+
+a {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+#doc {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+#doc p {
+    margin: 10px 0;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.pagination a {
+    color: #0056b3;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 0 4px;
+    display: inline-block;
+}
+
+.pagination a.active {
+    background-color: #0056b3;
+    color: #fff;
+}
+
+
+/*下拉注册登陆样式*/
+.dropdown {
+    position: absolute;
+    top: 100;
+    right: 100;
+    cursor: pointer;
+    display: block; /* 将下拉菜单设置为块级元素 */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    top: 100%; /* 菜单显示在下拉按钮下方 */
+    right: 0; /* 调整菜单与按钮右对齐 */
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 添加箭头样式 */
+.arrow-down {
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+    position: relative;
+    top: 1px;
+}
